@@ -6,11 +6,10 @@ def lambda_handler(event, context):
   
     try:
         #get zip code from the request
-        request_body = json.loads(event.get('body'))
-        zipcode = request_body["zipcode"]
+        zipcode = event["zipcode"]
 
         #get the location key from the api
-        locationapi_url = "http://dataservice.accuweather.com/locations/v1/postalcodes/search?details=true&apikey=TGjfbl4wl1GLIEeID2GeTHfE2P0hKnnj&q=75035"
+        locationapi_url = "http://dataservice.accuweather.com/locations/v1/postalcodes/search?details=true&apikey=TGjfbl4wl1GLIEeID2GeTHfE2P0hKnnj&q={}".format(zipcode)
         response = requests.request("GET", locationapi_url)
 
         location_response = json.loads(response.text) 
