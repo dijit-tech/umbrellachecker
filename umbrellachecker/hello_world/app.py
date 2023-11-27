@@ -3,10 +3,12 @@ import requests
 
 
 def lambda_handler(event, context):
-  
+
     try:
+        # Set up event 
+        request_body = json.loads(event.get('body'))
         #get zip code from the request
-        zipcode = event["zipcode"]
+        zipcode = request_body["zipcode"]
 
         #get the location key from the api
         locationapi_url = "http://dataservice.accuweather.com/locations/v1/postalcodes/search?details=true&apikey=TGjfbl4wl1GLIEeID2GeTHfE2P0hKnnj&q={}".format(zipcode)
@@ -21,6 +23,7 @@ def lambda_handler(event, context):
         response = requests.request("GET", forecastapi_url)
         forecast_response = json.loads(response.text)
         
+
         rainprobablity = forecast_response['DailyForecasts'][0]['Day']['RainProbability']
 
         #return the response if the probability is more than 5
